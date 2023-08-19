@@ -1,0 +1,5 @@
+- can upload files to storage & realtime database
+- building and style Navbar component
+- optimize preformance [many re-render - handling img size to improve preformance]
+- use react-lazy-load library
+- deploy project on github
