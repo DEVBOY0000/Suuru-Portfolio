@@ -11,7 +11,16 @@ const Project = ({ item }) => {
     <Link to={`project/${item.name}`}>
       <div className="relative group h-full w-full">
         {state ? (
-          <video loop muted autoPlay className="object-cover h-full">
+          <video
+            loop
+            muted
+            autoPlay
+            playsinline
+            autobuffer
+            preload="auto"
+            className="object-cover h-full"
+            src={item.video}
+          >
             <source type="video/mp4" src={item.video} />
           </video>
         ) : (

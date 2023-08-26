@@ -26,6 +26,9 @@ const Header = () => {
         loop
         muted
         autoPlay
+        playsinline
+        autobuffer
+        preload="auto"
         className="w-screen h-screen object-cover object-right"
         src={URL}
       >

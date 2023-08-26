@@ -18,6 +18,9 @@ const CurrentView = ({ state, arrowHandler }) => {
           loop
           muted
           autoPlay
+          playsinline
+          autobuffer
+          preload="auto"
           src={state}
         >
           <source type="video/mp4" src={state}></source>
