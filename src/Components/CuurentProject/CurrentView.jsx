@@ -4,7 +4,7 @@ import right_arrow from "../../SVG/right_arrow.svg";
 
 const CurrentView = ({ state, arrowHandler }) => {
   return (
-    <div className="relative w-full h-[calc(100vh_-_57px)] xs:h-[calc(100vh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden">
+    <div className="relative w-full max-w-[600px] min-w-fit sm:min-w-[600px] h-[calc(100vh_-_57px)] xs:h-[calc(100vh_-_(3rem_+_57px))] xs:w-[fit-content] mx-auto my-0 xs:my-6 mb-3 rounded-none xs:rounded-lg overflow-hidden">
       <img
         src={left_arrow}
         alt="left_arrow"
@@ -18,8 +18,7 @@ const CurrentView = ({ state, arrowHandler }) => {
           loop
           muted
           autoPlay
-          playsinline
-          autobuffer
+          playsInline
           preload="auto"
           src={state}
         >
@@ -28,7 +27,7 @@ const CurrentView = ({ state, arrowHandler }) => {
       ) : (
         <img
           loading="lazy"
-          className="object-cover w-full h-full"
+          className="object-cover w-full h-full object-top"
           src={state}
         />
       )}

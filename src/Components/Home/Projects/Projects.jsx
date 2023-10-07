@@ -47,7 +47,7 @@ const Projects = () => {
   return (
     <div
       id="projects"
-      className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 p-2 min-h-[calc(100vh_-_(57px))] dark:bg-dark-color"
+      className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 p-2 min-h-[calc(100vh_-_(57px))] "
     >
       {data.map((item, key) => (
         <Project item={item} key={key} />

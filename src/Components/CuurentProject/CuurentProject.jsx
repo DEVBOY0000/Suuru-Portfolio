@@ -54,7 +54,7 @@ const CuurentProject = () => {
   useScrollToTop(currView);
 
   return (
-    <div className="p-10 px-0 pt-[57px] flex flex-col overflow-[hidden] dark:bg-dark-color">
+    <div className="p-10 px-0 pt-[57px] flex flex-col overflow-[hidden] ">
       <CurrentView state={currView} arrowHandler={prev_next_state} />
       <Items props={{ data, currView, currentViewHandler }} />
     </div>

@@ -1,7 +1,12 @@
-import React from "react";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { useOutletContext } from "react-router-dom";
 
 const Item = ({ props: { item, currView, currentViewHandler } }) => {
+  const [checked, setCheckedState] = useState(false);
+
   const contnetType = (text) => {
     return (
       <div
@@ -12,6 +17,8 @@ const Item = ({ props: { item, currView, currentViewHandler } }) => {
     );
   };
 
+  const [editable] = useOutletContext();
+
   return (
     <div
       className={`relative h-full cursor-pointer rounded-lg overflow-hidden ${
@@ -19,8 +26,15 @@ const Item = ({ props: { item, currView, currentViewHandler } }) => {
           ? "border-4 border-black dark:border-white"
           : "hover:border-black dark:hover:border-white hover:border-4"
       }`}
-      onClick={() => currentViewHandler(item)}
+      onClick={() =>
+        editable ? setCheckedState(!checked) : currentViewHandler(item)
+      }
     >
+      {editable && checked && (
+        <div className="w-full h-full absolute bg-black/60 flex justify-center items-center">
+          <FontAwesomeIcon icon={faCheck} color="white" size="4x" />
+        </div>
+      )}
       {item?.includes("mp4") ? (
         <>
           {contnetType("mp4")}
