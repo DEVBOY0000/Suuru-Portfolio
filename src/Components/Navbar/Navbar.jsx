@@ -45,6 +45,7 @@ const Navbar = () => {
 
   return (
     <div
+      id="navbar"
       className={`fixed z-20 p-3 w-full text-white flex sm:justify-between items-center transition-colors  ${StylesHandler(
         {
           active:

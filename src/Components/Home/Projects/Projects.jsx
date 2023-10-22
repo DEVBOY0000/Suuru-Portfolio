@@ -1,20 +1,25 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ref, get } from "firebase/database";
 import { ref as storageRef, listAll, getDownloadURL } from "firebase/storage";
 import { database, storage } from "../../../Firebase/Firebase";
 
 import Project from "./Project";
+import { AppContext } from "../../../Context/AppContext";
 
 const Projects = () => {
-  const [data, setData] = useState([]);
+  const { projects, setProjects } = useContext(AppContext);
 
   useEffect(() => {
-    if (!data.length) {
+    if (!projects.length) {
       const dbRef = ref(database);
       get(dbRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
-            setData(snapshot.val());
+            // console.log(snapshot.val());
+            const result = snapshot
+              .val()
+              .map((item) => ({ ...item, playVideoState: false }));
+            setProjects(result);
           } else {
             console.log("No data available");
           }
@@ -23,7 +28,7 @@ const Projects = () => {
           console.error(error);
         });
     }
-  }, [data.length, data]);
+  }, [projects.length]);
 
   // useEffect(() => {
   //   const allProjectsArray = [];
@@ -47,10 +52,11 @@ const Projects = () => {
   return (
     <div
       id="projects"
-      className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 p-2 min-h-[calc(100vh_-_(57px))] "
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 auto-rows-[400px] xs:auto-rows-[450px] sm:auto-rows-[500px] gap-3 p-2 min-h-[calc(100vh_-_(57px))] "
+      onMouseUp={console.log("out")}
     >
-      {data.map((item, key) => (
-        <Project item={item} key={key} />
+      {projects.map((project, key) => (
+        <Project project={project} key={key} />
       ))}
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { storage } from "../../../Firebase/Firebase";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 
@@ -22,7 +22,6 @@ const Header = () => {
   return (
     <div className="h-screen relative">
       <video
-        loading="lazy"
         loop
         muted
         autoPlay

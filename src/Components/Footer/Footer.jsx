@@ -1,8 +1,19 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { footerIconsArray } from "../../Utils/constants";
+import { useLocation } from "react-router-dom";
+
+import kemonoIcon from "./../../Utils/Images/kemono.png";
 const Footer = () => {
+  const { pathname } = useLocation();
+
+  const handlingClass = () =>
+    pathname === "/Surru-Portfolio/uploadProject" ? "" : "fixed -z-10 bottom-0";
+
   return (
-    <footer className=" dark:bg-dark-color bg-white fixed bottom-0 -z-10 py-3 w-full dark:text-white transition-colors text-black">
+    <footer
+      id="footer"
+      className={`dark:bg-dark-color bg-white ${handlingClass()} py-3 w-full dark:text-white transition-colors text-black`}
+    >
       <div className="flex justify-between items-center px-5 flex-col sm:flex-row-reverse">
         <ul className="flex">
           {footerIconsArray.map((list) => (
@@ -12,6 +23,11 @@ const Footer = () => {
               </a>
             </li>
           ))}
+          <li className="m-3 block">
+            <a href="https://kemono.party/fanbox/user/20108548" target="_blank">
+              <img src={kemonoIcon} className="w-[20px] h-[20px] mt[2px]" />
+            </a>
+          </li>
         </ul>
         <p className="text-sm xs:text-base">
           © {new Date().getFullYear()} Suuru Art, Inc. All rights reserved.

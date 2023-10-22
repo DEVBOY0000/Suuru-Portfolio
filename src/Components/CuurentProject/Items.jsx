@@ -1,23 +1,49 @@
-import React from "react";
-import Item from "./Item";
-import { useOutletContext } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { storage } from "../../Firebase/Firebase";
+import { AppContext } from "../../Context/AppContext";
+import { useParams } from "react-router-dom";
 import { useScrollToElement } from "../../Hooks/useScrollToElement";
+import Item from "./Item";
 
-const Items = ({ props: { data, currView, currentViewHandler } }) => {
-  const [editable] = useOutletContext();
+const Items = () => {
+  const {
+    currentProjectItems,
+    setCurrentProjectItems,
+    deletionState,
+    setCurrentView,
+  } = useContext(AppContext);
 
-  useScrollToElement("items", editable);
+  const { name } = useParams();
+
+  useScrollToElement("items", deletionState);
+
+  //get currentProjectItems
+  useEffect(() => {
+    const listItemsRef = ref(storage, name);
+    const result = [];
+    setCurrentView("");
+    listAll(listItemsRef).then(({ items }) =>
+      items.forEach((item) =>
+        getDownloadURL(item).then((res) => {
+          result.push(res);
+          setCurrentProjectItems([...result]);
+        })
+      )
+    );
+  }, [name]);
 
   return (
     <div
       id="items"
-      className="grid xs:grid-cols-[repeat(auto-fill,_minmax(200px,_auto))] grid-cols-2 gap-3 mx-3"
+      className="min-h-[100vh] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 auto-rows-[400px] xs:auto-rows-[450px] gap-3 mx-3"
     >
-      {data.map((item, i) => (
-        <Item props={{ item, currView, currentViewHandler }} key={i} />
+      {currentProjectItems.map((item, i) => (
+        <Item item={item} key={i} />
       ))}
     </div>
   );
+  s;
 };
 
 export default Items;

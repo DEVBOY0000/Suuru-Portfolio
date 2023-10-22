@@ -1,25 +1,62 @@
-import React, { useState } from "react";
-import { storage } from "../../Firebase/Firebase";
-import { ref, uploadBytes } from "firebase/storage";
-import { v4 } from "uuid";
+import React, { useEffect, useRef, useState } from "react";
+import { storage, database } from "../../Firebase/Firebase";
+import { ref as stRef, uploadBytes } from "firebase/storage";
+import { ref as dbRef, set, get } from "firebase/database";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCloudArrowUp, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const UploadProject = () => {
   const [folder, setFolder] = useState([]);
 
+  const [projects, setProjects] = useState([]);
+
+  const [uploadingState, setUploadingState] = useState(false);
+
+  const textInputRef = useRef();
+
   const formHandler = (e) => {
     e.preventDefault();
     if (!folder.length) return;
     const folderName = e.target.folder_name.value;
     folder.forEach((file) => {
-      const imageRef = ref(storage, `${folderName}/${file.name + v4()}`);
+      const imageRef = stRef(storage, `${folderName}/${file.name}`);
       uploadBytes(imageRef, file);
+      setUploadingState(true);
     });
   };
 
+  //get realtime database
+  useEffect(() => {
+    if (!projects.length) {
+      const db = dbRef(database);
+      get(db)
+        .then((snapshot) =>
+          snapshot.exists()
+            ? setProjects(snapshot.val())
+            : console.error("No data available")
+        )
+        .catch((error) => console.error(error));
+    }
+  }, [projects.length]);
+
+  //updata firebase realtime database
+  useEffect(() => {
+    if (uploadingState && folder.length) {
+      set(dbRef(database, "/" + projects.length), {
+        name: textInputRef.current.value,
+        image: `https://firebasestorage.googleapis.com/v0/b/portofolio-6fbe1.appspot.com/o/${encodeURIComponent(
+          textInputRef.current.value + "/"
+        )}extra (1).jpg?alt=media`,
+      })
+        .catch((error) => console.error(error))
+        .finally(() => setUploadingState(false));
+    }
+  }, [uploadingState, folder.length]);
+
+  console.log(folder);
+
   return (
-    <div className="bg-gray-200 pt-[57px] h-[100vh] flex justify-center items-center dark:bg-dark-color">
+    <div className="bg-gray-200 pt-[57px] min-h-[100vh] flex justify-center items-center dark:bg-dark-color">
       <div className="rounded-xl bg-white p-5 flex gap-5 mx-3 max-h-[calc(100vh_-_(57px_+_20px))] xs:h-auto overflow-auto">
         <form onSubmit={(e) => formHandler(e)}>
           <div>
@@ -29,13 +66,17 @@ const UploadProject = () => {
               className="p-2 outline-none border-b-2 w-full"
               id="folder_name"
               required
+              ref={textInputRef}
+              autoComplete="off"
             />
           </div>
           <div className="my-3 w-[65vw] xs:w-[300px] h-[350px] relative">
             {folder.length ? (
               <div
                 className="absolute top-2 right-2 z-10 bg-white w-6 h-6 text-center rounded-full text-xs leading-5 border-2 cursor-pointer"
-                onClick={() => setFolder([])}
+                onClick={() => (
+                  setFolder([]), (textInputRef.current.value = "")
+                )}
               >
                 <FontAwesomeIcon icon={faXmark} />
               </div>
@@ -47,8 +88,17 @@ const UploadProject = () => {
               className="p-2 border hidden"
               id="file_value"
               multiple
+              accept="*"
               webkitdirectory="true"
-              onChange={({ target }) => setFolder([...target.files])}
+              onChange={({ target }) => (
+                setFolder([...target.files]),
+                (textInputRef.current.value = [
+                  ...target.files,
+                ][0]?.webkitRelativePath.slice(
+                  0,
+                  [...target.files][0]?.webkitRelativePath.indexOf("/")
+                ))
+              )}
             />
             <label htmlFor="file_value" className="cursor-pointer">
               <div className=" bg-gray-200 rounded-lg h-full">

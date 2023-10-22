@@ -1,31 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import FlotingEditIcon from "../FlotingEditIcon/FlotingEditIcon";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import FlotingEdition from "../FlotingEdition/FlotingEdition";
+import DeleteButton from "../DeleteButton/DeleteButton";
+import { AppContext } from "../../Context/AppContext";
 
 const ParentApp = () => {
-  const [editable, setEditable] = useState(false);
+  const { deletedItems } = useContext(AppContext);
 
   const { pathname } = useLocation();
 
-  const editHandler = () => setEditable(!editable);
-
   return (
-    <div className="dark:bg-dark-color bg-white">
+    <div className="dark:bg-dark-color bg-white ">
       <Navbar />
       <div
         className={
           pathname !== "/Surru-Portfolio"
-            ? "mb-[-72px]"
-            : "mb-[96px] sm:mb-[72px]"
+            ? "mb-[-60px]"
+            : "mb-[92px] xs:mb-[96px] sm:mb-[72px]"
         }
       >
-        <Outlet context={[editable]} />
+        <Outlet />
       </div>
-      {pathname !== "/Surru-Portfolio" && (
-        <FlotingEditIcon state={editable} handler={editHandler} />
-      )}
+      {pathname !== "/Surru-Portfolio" &&
+        pathname !== "/Surru-Portfolio/uploadProject" && (
+          <>
+            <FlotingEdition />
+            {deletedItems.length ? <DeleteButton /> : false}
+          </>
+        )}
       <Footer />
     </div>
   );
