@@ -53,7 +53,7 @@ const Projects = () => {
     <div
       id="projects"
       className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 auto-rows-[400px] xs:auto-rows-[450px] sm:auto-rows-[500px] gap-3 p-2 min-h-[calc(100vh_-_(57px))] "
-      onMouseUp={console.log("out")}
+      // onMouseUp={console.log("out")}
     >
       {projects.map((project, key) => (
         <Project project={project} key={key} />

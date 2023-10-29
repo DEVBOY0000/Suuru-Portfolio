@@ -9,6 +9,20 @@ module.exports = {
       backgroundColor: {
         "dark-color": "rgb(24 24 27)",
       },
+      animation: {
+        fadeIn: "fadeIn 0.5s ease 1",
+        fadeOut: "fadeOut 0.5s ease 1 forwards",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+      },
     },
     screens: {
       xs: "480px",

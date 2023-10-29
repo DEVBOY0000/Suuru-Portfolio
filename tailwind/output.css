@@ -554,6 +554,18 @@ video {
   bottom: 1.25rem;
 }
 
+.bottom-\[0px\] {
+  bottom: 0px;
+}
+
+.bottom-\[50px\] {
+  bottom: 50px;
+}
+
+.bottom-\[80px\] {
+  bottom: 80px;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -580,6 +592,18 @@ video {
 
 .right-\[10px\] {
   right: 10px;
+}
+
+.right-\[25px\] {
+  right: 25px;
+}
+
+.right-\[70px\] {
+  right: 70px;
+}
+
+.right-\[80px\] {
+  right: 80px;
 }
 
 .top-0 {
@@ -620,6 +644,14 @@ video {
 
 .z-20 {
   z-index: 20;
+}
+
+.z-30 {
+  z-index: 30;
+}
+
+.z-40 {
+  z-index: 40;
 }
 
 .float-right {
@@ -705,10 +737,6 @@ video {
   display: none;
 }
 
-.h-1 {
-  height: 0.25rem;
-}
-
 .h-6 {
   height: 1.5rem;
 }
@@ -753,12 +781,12 @@ video {
   min-height: 100vh;
 }
 
-.min-h-\[calc\(100vh_-_\(57px\)\)\] {
-  min-height: calc(100vh - (57px));
+.min-h-\[60px\] {
+  min-height: 60px;
 }
 
-.w-1 {
-  width: 0.25rem;
+.min-h-\[calc\(100vh_-_\(57px\)\)\] {
+  min-height: calc(100vh - (57px));
 }
 
 .w-6 {
@@ -821,6 +849,34 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease 1;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.5s ease 1 forwards;
+}
+
 @keyframes pulse {
   50% {
     opacity: .5;
@@ -879,6 +935,10 @@ video {
 
 .gap-5 {
   gap: 1.25rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
 }
 
 .overflow-auto {
@@ -954,6 +1014,10 @@ video {
 
 .bg-black\/60 {
   background-color: rgb(0 0 0 / 0.6);
+}
+
+.bg-black\/70 {
+  background-color: rgb(0 0 0 / 0.7);
 }
 
 .bg-dark-color {
@@ -1353,6 +1417,30 @@ video {
 
   .xs\:auto-rows-\[450px\] {
     grid-auto-rows: 450px;
+  }
+
+  .xs\:auto-rows-\[calc\(50vh_-_52px\)\] {
+    grid-auto-rows: calc(50vh - 52px);
+  }
+
+  .xs\:auto-rows-\[calc\(100vh_\/_2_-_\(57px_\+_24px\)\)\] {
+    grid-auto-rows: calc(100vh / 2 - (57px + 24px));
+  }
+
+  .xs\:auto-rows-\[calc\(100vh_\/_2_-_\(57px_-_\(1\.5rem_\+_1\.5rem\)\)\)\] {
+    grid-auto-rows: calc(100vh / 2 - (57px - (1.5rem + 1.5rem)));
+  }
+
+  .xs\:auto-rows-\[calc\(100vh_\/_2_-_\(57px_\+_\(1\.5rem_\+_1\.5rem\)\)\)\] {
+    grid-auto-rows: calc(100vh / 2 - (57px + (1.5rem + 1.5rem)));
+  }
+
+  .xs\:auto-rows-\[calc\(100vh_\/_2_-_\(57px_-_5px\)\)\] {
+    grid-auto-rows: calc(100vh / 2 - (57px - 5px));
+  }
+
+  .xs\:auto-rows-\[calc\(100vh_\/_2_-_\(57px\)\)\] {
+    grid-auto-rows: calc(100vh / 2 - (57px));
   }
 
   .xs\:rounded-lg {

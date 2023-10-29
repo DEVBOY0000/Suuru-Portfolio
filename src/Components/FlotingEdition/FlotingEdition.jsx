@@ -1,37 +1,94 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faXmark } from "@fortawesome/free-solid-svg-icons";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../Context/AppContext";
+import OptionButton from "../../Reuseable Components/OptionButton";
+import { optionButtons } from "../../Utils/constants";
 
 const FlotingEdition = () => {
-  const { deletionState, del_undel_handler, setDeletionState } =
-    useContext(AppContext);
+  const {
+    editState,
+    optBtnsState,
+    toggleEditHandler,
+    currentIcon,
+    editingOpration,
+    selectedItems,
+    resetEditingStateHandler,
+    downloadItemsHandler,
+    uplodingItemsHandler,
+    deletedItemsHandler,
+  } = useContext(AppContext);
 
-  const [currTargetView, setCurrTargetView] = useState(false);
+  // useEffect(() => {
+  //   const listener = () => {
+  //     const rect = document.getElementById("items").getBoundingClientRect();
+
+  //     rect.top <= window.innerHeight / 2
+  //       ? setCurrTargetView(true)
+  //       : setCurrTargetView(false);
+  //   };
+
+  //   window.addEventListener("scroll", listener);
+  //   return () => window.removeEventListener("scroll", listener);
+  // }, [currTargetView]);
+
+  const editingButtonHandler = () => {
+    if (!editingOpration.state) {
+      toggleEditHandler();
+    }
+
+    switch (editingOpration.type) {
+      case "DeleteButton":
+        deletedItemsHandler();
+        break;
+      case "DownloadButton":
+        downloadItemsHandler();
+        break;
+      case "UploadButton":
+        uplodingItemsHandler();
+        break;
+    }
+  };
 
   useEffect(() => {
-    const listener = () => {
-      const rect = document.getElementById("items").getBoundingClientRect();
-
-      rect.top <= window.innerHeight / 2
-        ? setCurrTargetView(true)
-        : setCurrTargetView(false);
-    };
-
-    window.addEventListener("scroll", listener);
-    return () => window.removeEventListener("scroll", listener);
-  }, [currTargetView]);
+    if (editState) document.body.classList.add("overflow-hidden");
+    else document.body.classList.remove("overflow-hidden");
+  }, [editState]);
 
   return (
-    <div
-      className="cursor-pointer active:scale-95 select-none sticky bottom-5 mb-[92px] sx:mb-[96px] sm:mb-[72px] float-right right-5 z-10 w-[60px] h-[60px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center"
-      onClick={() => del_undel_handler(currTargetView)}
-    >
-      {deletionState && currTargetView ? (
-        <FontAwesomeIcon icon={faXmark} size="lg" />
-      ) : (
-        <FontAwesomeIcon icon={faPenToSquare} />
+    <div className="sticky bottom-5 float-right right-5 min-h-[60px] mb-[92px] sx:mb-[96px] sm:mb-[72px] z-40 flex gap-2">
+      <button
+        className="active:scale-95 select-none relative z-30 w-[60px] h-[60px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center"
+        onClick={editingButtonHandler}
+      >
+        <FontAwesomeIcon icon={currentIcon} />
+        {editingOpration.state && selectedItems.length ? (
+          <span className="absolute right-0 -top-3 dark:text-black dark:bg-white text-white bg-dark-color text-xs line-clamp-[1.3rem] text-center w-[20px] h-[20px] rounded-full">
+            {selectedItems.length}
+          </span>
+        ) : (
+          false
+        )}
+      </button>
+      {editingOpration.state && (
+        <button
+          className="active:scale-95 select-none relative z-30 w-[60px] h-[60px] rounded-full shadow-xl shadow-gray dark:bg-white bg-dark-color dark:text-black text-white transition-colors flex justify-center items-center"
+          onClick={resetEditingStateHandler}
+        >
+          <FontAwesomeIcon icon="fa-solid fa-xmark" />
+        </button>
       )}
+      {editState &&
+        optionButtons.map((button) => (
+          <OptionButton
+            key={button.id}
+            style={button.class}
+            id={button.id}
+            state={optBtnsState}
+            name={button.name}
+          >
+            {button.component}
+          </OptionButton>
+        ))}
     </div>
   );
 };

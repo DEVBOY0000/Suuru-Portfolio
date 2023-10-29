@@ -11,7 +11,7 @@ function App() {
     <AppContextProvider>
       <Router>
         <Routes>
-          <Route path="Surru-Portfolio" element={<ParentApp />}>
+          <Route path="Suuru-Portfolio" element={<ParentApp />}>
             <Route path="" element={<Home />} />
             <Route path="project/:name" element={<CurrentProject />} />
             <Route path="uploadProject" element={<UploadProject />} />

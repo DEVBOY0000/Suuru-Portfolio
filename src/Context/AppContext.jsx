@@ -1,40 +1,75 @@
 import React, { createContext, useState } from "react";
 import {
-  deletedItemsHandler,
   nextView,
   prevView,
-  del_undel_handler,
+  toggleEditHandler,
+  resetEditingStateHandler,
+  selectedItemsHandler,
+  downloadItemsHandler,
 } from "./Actions";
 
 export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
   const [projects, setProjects] = useState([]);
   const [currentProjectItems, setCurrentProjectItems] = useState([]);
-  const [deletionState, setDeletionState] = useState(false);
-  const [deletedItems, setDeletedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
   const [currentView, setCurrentView] = useState("");
+  const [editState, setEditState] = useState(false);
+  const [optBtnsState, setOptBtnsState] = useState(false);
+  const [currentIcon, setCurrentIcon] = useState("fa-solid fa-pen-to-square");
+  const [editingOpration, setEditingOpration] = useState({
+    type: "",
+    state: false,
+  });
 
   const sharedValues = {
     projects,
     setProjects,
     currentProjectItems,
-    deletionState,
-    deletedItems,
+    selectedItems,
+    setSelectedItems,
     currentView,
-    setDeletionState,
-    setDeletedItems,
     setCurrentProjectItems,
     setCurrentView,
-    deletedItemsHandler: (item) => deletedItemsHandler(item, setDeletedItems),
+    editState,
+    setEditState,
+    optBtnsState,
+    setOptBtnsState,
+    currentIcon,
+    setCurrentIcon,
+    editingOpration,
+    setEditingOpration,
+
     nextView: () => nextView(currentProjectItems, currentView, setCurrentView),
     prevView: () => prevView(currentProjectItems, currentView, setCurrentView),
-    del_undel_handler: (currTargetView) =>
-      del_undel_handler(
-        setDeletionState,
-        setDeletedItems,
-        deletionState,
-        currTargetView
+    // del_undel_handler: (currTargetView) =>
+    //   del_undel_handler(
+    //     setDeletionState,
+    //     setDeletedItems,
+    //     deletionState,
+    //     currTargetView
+    //   ),
+    toggleEditHandler: (currIconName, id) =>
+      toggleEditHandler(
+        editState,
+        setEditState,
+        setOptBtnsState,
+        optBtnsState,
+        setCurrentIcon,
+        currIconName,
+        setEditingOpration,
+        id
       ),
+    resetEditingStateHandler: () =>
+      resetEditingStateHandler(
+        setCurrentIcon,
+        setEditingOpration,
+        setSelectedItems
+      ),
+    selectedItemsHandler: (item) =>
+      selectedItemsHandler(item, setSelectedItems),
+
+    downloadItemsHandler: () => downloadItemsHandler(selectedItems),
   };
 
   return (

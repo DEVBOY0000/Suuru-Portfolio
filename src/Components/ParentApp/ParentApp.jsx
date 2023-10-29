@@ -5,9 +5,11 @@ import Footer from "../Footer/Footer";
 import FlotingEdition from "../FlotingEdition/FlotingEdition";
 import DeleteButton from "../DeleteButton/DeleteButton";
 import { AppContext } from "../../Context/AppContext";
+import Modal from "../../Modal/Modal";
+import { globalIcons } from "../../Utils/GlobalIcons";
 
 const ParentApp = () => {
-  const { deletedItems } = useContext(AppContext);
+  const { deletedItems, editState } = useContext(AppContext);
 
   const { pathname } = useLocation();
 
@@ -24,15 +26,12 @@ const ParentApp = () => {
         <Outlet />
       </div>
       {pathname !== "/Surru-Portfolio" &&
-        pathname !== "/Surru-Portfolio/uploadProject" && (
-          <>
-            <FlotingEdition />
-            {deletedItems.length ? <DeleteButton /> : false}
-          </>
-        )}
+        pathname !== "/Surru-Portfolio/uploadProject" && <FlotingEdition />}
       <Footer />
+      {pathname !== "/Surru-Portfolio" && editState && <Modal />}
     </div>
   );
 };
 
 export default ParentApp;
+globalIcons();

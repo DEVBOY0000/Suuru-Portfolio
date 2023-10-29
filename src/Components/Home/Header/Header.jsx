@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { storage } from "../../../Firebase/Firebase";
 import { ref, listAll, getDownloadURL } from "firebase/storage";
+import Banner from "./Banner.jpg";
 
 const Header = () => {
   const [URL, setURL] = useState(null);
@@ -25,13 +26,12 @@ const Header = () => {
         loop
         muted
         autoPlay
-        playsInline
         preload="auto"
         className="w-screen h-screen object-cover object-right"
+        poster={Banner}
+        type="video/mp4"
         src={URL}
-      >
-        <source type="video/mp4" src={URL}></source>
-      </video>
+      />
       <div className="w-full h-full absolute top-0 left-0 bg-black opacity-80"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white flex flex-col items-center gap-3 z-0">
         <h1 className="text-center text-[5.5vw] lg:text-[60px] uppercase tracking-wide">

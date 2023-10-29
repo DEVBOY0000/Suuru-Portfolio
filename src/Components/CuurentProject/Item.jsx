@@ -7,7 +7,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Item = ({ item }) => {
-  const { deletionState, currentView, setCurrentView, deletedItemsHandler } =
+  const { editingOpration, currentView, setCurrentView, selectedItemsHandler } =
     useContext(AppContext);
 
   const [checked, setCheckedState] = useState(false);
@@ -22,11 +22,24 @@ const Item = ({ item }) => {
     );
   };
 
+  const onClickEventHandler = () => {
+    if (
+      editingOpration.state &&
+      (editingOpration.type.includes("Download") ||
+        editingOpration.type.includes("Delete"))
+    ) {
+      setCheckedState(!checked);
+      selectedItemsHandler(item);
+    } else {
+      setCurrentView(item);
+    }
+  };
+
   useEffect(() => {
-    if (checked && !deletionState) {
+    if (checked && !editingOpration.state) {
       setCheckedState(false);
     }
-  }, [deletionState]);
+  }, [editingOpration]);
 
   return (
     <div
@@ -35,13 +48,9 @@ const Item = ({ item }) => {
           ? "border-4 border-black dark:border-white"
           : "hover:border-black dark:hover:border-white hover:border-4"
       }`}
-      onClick={() =>
-        deletionState
-          ? (setCheckedState(!checked), deletedItemsHandler(item))
-          : setCurrentView(item)
-      }
+      onClick={onClickEventHandler}
     >
-      {deletionState && checked && (
+      {editingOpration.state && checked && (
         <div className="w-full h-full z-10 absolute backdrop-blur-[1.5px] bg-black/60 flex justify-center items-center">
           <FontAwesomeIcon icon={faCheck} color="white" size="4x" />
         </div>

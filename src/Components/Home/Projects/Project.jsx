@@ -38,14 +38,13 @@ const Project = ({ project }) => {
             loop
             muted
             autoPlay
-            playsInline
             autobuffer="true"
             preload="auto"
             className="object-cover h-full"
             src={project.video}
-          >
-            <source type="video/mp4" src={project.video} />
-          </video>
+            type="video/mp4"
+            poster={project.image}
+          />
         ) : (
           <LazyLoadImage
             effect="blur"
