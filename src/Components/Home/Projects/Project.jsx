@@ -38,6 +38,7 @@ const Project = ({ project }) => {
             loop
             muted
             autoPlay
+            playsInline
             autobuffer="true"
             preload="auto"
             className="object-cover h-full"

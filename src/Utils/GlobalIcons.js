@@ -6,7 +6,8 @@ import {
   faTrash,
   faDownload,
   faUpload,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const globalIcons = () =>
-  library.add(faXmark, faPenToSquare, faTrash, faDownload, faUpload);
+  library.add(faXmark, faPenToSquare, faTrash, faDownload, faUpload, faCheck);

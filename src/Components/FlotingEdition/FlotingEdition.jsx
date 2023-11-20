@@ -3,6 +3,7 @@ import { useContext, useEffect } from "react";
 import { AppContext } from "../../Context/AppContext";
 import OptionButton from "../../Reuseable Components/OptionButton";
 import { optionButtons } from "../../Utils/constants";
+import { useParams } from "react-router-dom";
 
 const FlotingEdition = () => {
   const {
@@ -14,22 +15,10 @@ const FlotingEdition = () => {
     selectedItems,
     resetEditingStateHandler,
     downloadItemsHandler,
-    uplodingItemsHandler,
     deletedItemsHandler,
   } = useContext(AppContext);
 
-  // useEffect(() => {
-  //   const listener = () => {
-  //     const rect = document.getElementById("items").getBoundingClientRect();
-
-  //     rect.top <= window.innerHeight / 2
-  //       ? setCurrTargetView(true)
-  //       : setCurrTargetView(false);
-  //   };
-
-  //   window.addEventListener("scroll", listener);
-  //   return () => window.removeEventListener("scroll", listener);
-  // }, [currTargetView]);
+  const { name } = useParams();
 
   const editingButtonHandler = () => {
     if (!editingOpration.state) {
@@ -38,13 +27,10 @@ const FlotingEdition = () => {
 
     switch (editingOpration.type) {
       case "DeleteButton":
-        deletedItemsHandler();
+        deletedItemsHandler(name);
         break;
       case "DownloadButton":
-        downloadItemsHandler();
-        break;
-      case "UploadButton":
-        uplodingItemsHandler();
+        downloadItemsHandler(name);
         break;
     }
   };
@@ -53,6 +39,10 @@ const FlotingEdition = () => {
     if (editState) document.body.classList.add("overflow-hidden");
     else document.body.classList.remove("overflow-hidden");
   }, [editState]);
+
+  useEffect(() => {
+    resetEditingStateHandler();
+  }, [name]);
 
   return (
     <div className="sticky bottom-5 float-right right-5 min-h-[60px] mb-[92px] sx:mb-[96px] sm:mb-[72px] z-40 flex gap-2">

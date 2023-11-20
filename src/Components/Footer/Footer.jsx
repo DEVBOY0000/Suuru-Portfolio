@@ -24,8 +24,15 @@ const Footer = () => {
             </li>
           ))}
           <li className="m-3 block">
-            <a href="https://kemono.party/fanbox/user/20108548" target="_blank">
-              <img src={kemonoIcon} className="w-[20px] h-[20px] mt[2px]" />
+            <a
+              href="https://kemono.party/fanbox/user/20108548"
+              target="_blank"
+              title="Kemono"
+            >
+              <img
+                src={kemonoIcon}
+                className="w-[20px] h-[20px] mt[2px] invert dark:invert-0"
+              />
             </a>
           </li>
         </ul>

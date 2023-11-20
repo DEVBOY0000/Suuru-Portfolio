@@ -36,7 +36,7 @@ const Items = () => {
   return (
     <div
       id="items"
-      className="min-h-[100vh] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 auto-rows-[400px] xs:auto-rows-[450px] gap-3 mx-3"
+      className="min-h-[calc(100vh_-_(57px_+_24px_+_72px))] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 auto-rows-[400px] xs:auto-rows-[450px] gap-3 mx-3"
     >
       {currentProjectItems.map((item, i) => (
         <Item item={item} key={i} />

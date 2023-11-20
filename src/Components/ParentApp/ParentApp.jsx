@@ -9,7 +9,7 @@ import Modal from "../../Modal/Modal";
 import { globalIcons } from "../../Utils/GlobalIcons";
 
 const ParentApp = () => {
-  const { deletedItems, editState } = useContext(AppContext);
+  const { editState } = useContext(AppContext);
 
   const { pathname } = useLocation();
 
@@ -18,17 +18,16 @@ const ParentApp = () => {
       <Navbar />
       <div
         className={
-          pathname !== "/Surru-Portfolio"
+          pathname !== "/Suuru-Portfolio"
             ? "mb-[-60px]"
             : "mb-[92px] xs:mb-[96px] sm:mb-[72px]"
         }
       >
         <Outlet />
       </div>
-      {pathname !== "/Surru-Portfolio" &&
-        pathname !== "/Surru-Portfolio/uploadProject" && <FlotingEdition />}
+      {pathname.includes("/Suuru-Portfolio/project/") && <FlotingEdition />}
       <Footer />
-      {pathname !== "/Surru-Portfolio" && editState && <Modal />}
+      {pathname !== "/Suuru-Portfolio" && editState && <Modal />}
     </div>
   );
 };

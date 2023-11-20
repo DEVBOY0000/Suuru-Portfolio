@@ -6,6 +6,8 @@ import {
   resetEditingStateHandler,
   selectedItemsHandler,
   downloadItemsHandler,
+  deletedItemsHandler,
+  uplodingItemsHandler,
 } from "./Actions";
 
 export const AppContext = createContext();
@@ -54,7 +56,6 @@ export const AppContextProvider = ({ children }) => {
         editState,
         setEditState,
         setOptBtnsState,
-        optBtnsState,
         setCurrentIcon,
         currIconName,
         setEditingOpration,
@@ -69,7 +70,24 @@ export const AppContextProvider = ({ children }) => {
     selectedItemsHandler: (item) =>
       selectedItemsHandler(item, setSelectedItems),
 
-    downloadItemsHandler: () => downloadItemsHandler(selectedItems),
+    downloadItemsHandler: (name) =>
+      downloadItemsHandler(
+        selectedItems,
+        name,
+        setCurrentIcon,
+        setEditingOpration,
+        setSelectedItems
+      ),
+    deletedItemsHandler: (name) =>
+      deletedItemsHandler(
+        selectedItems,
+        name,
+        setCurrentProjectItems,
+        setCurrentIcon,
+        setEditingOpration,
+        setSelectedItems
+      ),
+      uplodingItemsHandler: (name, uploadItems) => uplodingItemsHandler()
   };
 
   return (

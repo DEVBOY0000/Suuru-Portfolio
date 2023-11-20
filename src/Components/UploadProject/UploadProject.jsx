@@ -18,11 +18,12 @@ const UploadProject = () => {
     e.preventDefault();
     if (!folder.length) return;
     const folderName = e.target.folder_name.value;
-    folder.forEach((file) => {
-      const imageRef = stRef(storage, `${folderName}/${file.name}`);
-      uploadBytes(imageRef, file);
-      setUploadingState(true);
-    });
+    Promise.all(
+      folder.map((file) => {
+        const imageRef = stRef(storage, `${file?.webkitRelativePath}`);
+        uploadBytes(imageRef, file);
+      })
+    ).finally(() => setUploadingState(true));
   };
 
   //get realtime database
@@ -41,19 +42,33 @@ const UploadProject = () => {
 
   //updata firebase realtime database
   useEffect(() => {
+    const url =
+      "https://firebasestorage.googleapis.com/v0/b/portofolio-6fbe1.appspot.com/o/";
+
     if (uploadingState && folder.length) {
       set(dbRef(database, "/" + projects.length), {
         name: textInputRef.current.value,
-        image: `https://firebasestorage.googleapis.com/v0/b/portofolio-6fbe1.appspot.com/o/${encodeURIComponent(
+        image: `${url}${encodeURIComponent(
           textInputRef.current.value + "/"
-        )}extra (1).jpg?alt=media`,
+        )}extra%20(1).jpg?alt=media`,
+        video: `${url}${encodeURIComponent(
+          textInputRef.current.value +
+            "/" +
+            folder.filter((file) =>
+              file?.webkitRelativePath.includes("mp4")
+            )[0]["name"]
+        )}?alt=media`,
       })
         .catch((error) => console.error(error))
-        .finally(() => setUploadingState(false));
+        .finally(
+          () => setUploadingState(false),
+          setFolder([]),
+          (textInputRef.current.value = "")
+        );
     }
   }, [uploadingState, folder.length]);
 
-  console.log(folder);
+  console.log(uploadingState);
 
   return (
     <div className="bg-gray-200 pt-[57px] min-h-[100vh] flex justify-center items-center dark:bg-dark-color">
@@ -75,7 +90,9 @@ const UploadProject = () => {
               <div
                 className="absolute top-2 right-2 z-10 bg-white w-6 h-6 text-center rounded-full text-xs leading-5 border-2 cursor-pointer"
                 onClick={() => (
-                  setFolder([]), (textInputRef.current.value = "")
+                  setFolder([]),
+                  (textInputRef.current.value = ""),
+                  setUploadingState(false)
                 )}
               >
                 <FontAwesomeIcon icon={faXmark} />

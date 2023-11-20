@@ -34,7 +34,7 @@ const CurrentView = () => {
       ) : currentView?.includes("mp4") ? (
         <video
           loading="lazy"
-          className="object-cover w-full h-full "
+          className="object-cover w-full h-full"
           loop
           muted
           autoPlay

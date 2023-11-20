@@ -1,11 +1,7 @@
-// export const deletedItemsHandler = (item, handler) => {
-//   handler((prev) => {
-//     const index = prev.indexOf(item);
-//     return index === -1 ? [...prev, item] : prev.filter((e) => e !== item);
-//   });
-// };
-
 import JSZip from "jszip";
+import { saveAs } from "file-saver";
+import { deleteObject, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../Firebase/Firebase";
 
 export const nextView = (items, currView, handler) => {
   const index = items.findIndex((e) => e === currView);
@@ -35,7 +31,6 @@ export const toggleEditHandler = (
   editState,
   setEditState,
   setOptBtnsState,
-  optBtnsState,
   setCurrentIcon,
   currIconName = "fa-solid fa-pen-to-square",
   setEditingOpration,
@@ -44,6 +39,7 @@ export const toggleEditHandler = (
   let time;
   if (!editState) {
     setEditState(true);
+    setOptBtnsState(true);
     setCurrentIcon("fa-solid fa-xmark");
   } else {
     const modal = document.getElementById("Modal");
@@ -52,8 +48,8 @@ export const toggleEditHandler = (
       setEditState(false);
     }, 300);
     setCurrentIcon(currIconName);
+    setOptBtnsState(false);
   }
-  setOptBtnsState(!optBtnsState);
   if (currIconName !== "fa-solid fa-pen-to-square") {
     setEditingOpration({ type: id, state: true });
   } else {
@@ -79,31 +75,74 @@ export const resetEditingStateHandler = (
   setSelectedItems([]);
 };
 
-export const deletedItemsHandler = (selectedItems) => {};
-
-export const downloadItemsHandler = (selectedItems) => {
-  async function downloadImage(url) {
-    const image = await fetch(url);
-    const imageBlog = await image.blob();
-    const imageURL = URL.createObjectURL(imageBlog);
-    const link = document.createElement("a");
-    link.href = imageURL;
-    link.download = "image file name here";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
-  // const zip = new JSZip();
-
-  // return Promise.all(
-  //   selectedItems.map((url) =>
-  //     fetch(url)
-  //       .then((res) => res.blob())
-  //       .then((blob) => (blob.name = URL.createObjectURL(blob)))
-  //   )
-  // ).then((data) => console.log(data));
-  return Promise.all(selectedItems.map((url) => downloadImage(url)));
+export const deletedItemsHandler = (
+  selectedItems,
+  name,
+  setCurrentProjectItems,
+  setCurrentIcon,
+  setEditingOpration,
+  setSelectedItems
+) => {
+  selectedItems.forEach((item) => {
+    const itemRef = ref(storage, `${item}`);
+    deleteObject(itemRef).finally(() => {
+      setCurrentProjectItems((prev) => {
+        const filteredItems = prev.filter(
+          (item) => !selectedItems.includes(item)
+        );
+        return filteredItems;
+      });
+      resetEditingStateHandler(
+        setCurrentIcon,
+        setEditingOpration,
+        setSelectedItems
+      );
+    });
+  });
 };
 
-export const uplodingItemsHandler = (setSelectedItems, item) => {};
+export const downloadItemsHandler = async (
+  selectedItems,
+  name,
+  setCurrentIcon,
+  setEditingOpration,
+  setSelectedItems
+) => {
+  function unEncodedStr(string) {
+    const matchOBj = { "%20": " ", "%5B": "[", "%5D": "]", "%2F": "/" };
+    Object.keys(matchOBj).map((e) => {
+      const reg = new RegExp(e, "g");
+      string = string.replace(reg, matchOBj[e]);
+    });
+    return string;
+  }
+
+  const zip = new JSZip();
+  const folder = zip.folder(name);
+  return Promise.all(
+    selectedItems.map(async (url) => {
+      const projectNameIndex = url.indexOf(name.split(/\s/)[0]);
+      const questionMarkIndex = url.indexOf("?");
+      const fileName = unEncodedStr(
+        url.substring(projectNameIndex, questionMarkIndex)
+      );
+      const imgBlob = await (await fetch(url)).blob();
+      const file = new File([imgBlob], fileName);
+      folder.file(file.name, file);
+    })
+  ).then(
+    () =>
+      folder.generateAsync({ type: "blob" }).then(function (content) {
+        saveAs(content, `${name}.zip`);
+      }),
+    resetEditingStateHandler(
+      setCurrentIcon,
+      setEditingOpration,
+      setSelectedItems
+    )
+  );
+};
+
+export const uplodingItemsHandler = (setSelectedItems, item) => {
+
+};

@@ -1,6 +1,5 @@
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, memo } from "react";
 import { AppContext } from "../../Context/AppContext";
 import Loading from "../../Reuseable Components/Loading";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -52,7 +51,7 @@ const Item = ({ item }) => {
     >
       {editingOpration.state && checked && (
         <div className="w-full h-full z-10 absolute backdrop-blur-[1.5px] bg-black/60 flex justify-center items-center">
-          <FontAwesomeIcon icon={faCheck} color="white" size="4x" />
+          <FontAwesomeIcon icon="fa-solid fa-check" color="white" size="4x" />
         </div>
       )}
       {item ? (
@@ -61,6 +60,7 @@ const Item = ({ item }) => {
             {contnetType("mp4")}
 
             <video
+              playsInline
               loading="lazy"
               className="h-full object-cover w-full object-top"
               src={item}
@@ -87,4 +87,4 @@ const Item = ({ item }) => {
     </div>
   );
 };
-export default React.memo(Item);
+export default memo(Item);
