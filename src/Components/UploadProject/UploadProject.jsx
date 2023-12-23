@@ -51,13 +51,14 @@ const UploadProject = () => {
         image: `${url}${encodeURIComponent(
           textInputRef.current.value + "/"
         )}extra%20(1).jpg?alt=media`,
-        video: `${url}${encodeURIComponent(
-          textInputRef.current.value +
-            "/" +
-            folder.filter((file) =>
-              file?.webkitRelativePath.includes("mp4")
-            )[0]["name"]
-        )}?alt=media`,
+        video:
+          `${url}${encodeURIComponent(
+            textInputRef.current.value +
+              "/" +
+              folder.filter((file) =>
+                file?.webkitRelativePath.includes("mp4")
+              )[0]?.name
+          )}?alt=media` && "",
       })
         .catch((error) => console.error(error))
         .finally(

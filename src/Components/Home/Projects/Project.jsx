@@ -32,8 +32,9 @@ const Project = ({ project }) => {
       onMouseOut={mouseLeaveHandler}
       onMouseLeave={mouseLeaveHandler}
     >
+      {/*project.playVideoState && project.video */}
       <div className="relative group h-full w-full">
-        {project.playVideoState && project.video ? (
+        {false ? (
           <video
             loop
             muted
